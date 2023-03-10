@@ -4,6 +4,7 @@ import entity.Card
 import entity.CardNumber
 import entity.CardType
 import entity.Cards
+import entity.GameResultType
 
 class ViewUtils {
     companion object {
@@ -34,6 +35,14 @@ class ViewUtils {
 
         fun Card.toFormattedString(): String {
             return cardNumber.toShorthandString() + cardType.toKoreanString()
+        }
+
+        fun GameResultType.toKoreanString(): String {
+            return when (this) {
+                GameResultType.WIN -> "승"
+                GameResultType.LOSE -> "패"
+                GameResultType.DRAW -> "무"
+            }
         }
     }
 }

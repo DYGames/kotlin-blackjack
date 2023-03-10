@@ -1,8 +1,8 @@
 package controller
 
 import controller.ViewUtils.Companion.toFormattedString
+import controller.ViewUtils.Companion.toKoreanString
 import entity.Dealer
-import entity.GameResultType
 import entity.Money
 import entity.Name
 import entity.Player
@@ -62,23 +62,14 @@ class BlackjackController(
         val playersGameResult = users.players.determineAllPlayerGameResult(users.dealer)
         val dealerGameResult = playersGameResult.makeDealerGameResult()
         resultView.printGameResult(
-            dealerGameResult.value.asSequence().associate { gameResultTypeToString(it.key) to it.value },
-            playersGameResult.value.asSequence()
-                .associate { it.key.name.value to gameResultTypeToString(it.value.type) }
+            dealerGameResult.value.asSequence().associate { it.key.toKoreanString() to it.value },
+            playersGameResult.value.asSequence().associate { it.key.name.value to it.value.type.toKoreanString() }
         )
         resultView.printProfitResult(
             dealerGameResult.profit.value,
             playersGameResult.value.keys.map { it.name.value },
             playersGameResult.value.values.map { it.profit.value }
         )
-    }
-
-    private fun gameResultTypeToString(gameResultType: GameResultType): String {
-        return when (gameResultType) {
-            GameResultType.WIN -> "승"
-            GameResultType.LOSE -> "패"
-            GameResultType.DRAW -> "무"
-        }
     }
 
     fun process(cardFactory: CardFactory) {
