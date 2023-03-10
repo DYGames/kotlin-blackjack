@@ -15,13 +15,15 @@ class BlackjackControllerTest {
     @Test
     fun `세 명의 플레이어를 가지고 게임을 1회 실행한다`() {
         // given
-        val fakeConsole = StringBuilder()
+        val output = StringBuilder()
         val input = FakeInput(
             listOf(
                 "corgan,bix,sangoon", "1000", "2000", "3000", "y", "n", "n", "n"
             )
         )
-        val output = FakeOutput(fakeConsole)
+        val fakeOutput = FakeOutput {
+            output.append(it)
+        }
         val cardFactory = ManualCardFactory(
             listOf(
                 CardType.HEART to CardNumber.FIVE,
@@ -37,7 +39,7 @@ class BlackjackControllerTest {
             )
         )
         val blackjackController = BlackjackController(
-            InitView(input, output), GameView(input, output), ResultView(output)
+            InitView(input, fakeOutput), GameView(input, fakeOutput), ResultView(fakeOutput)
         )
 
         // when
@@ -74,6 +76,6 @@ class BlackjackControllerTest {
             |bix: 0
             |sangoon: 6000
             |""".trimMargin()
-        assertThat(fakeConsole.toString()).isEqualTo(except)
+        assertThat(output.toString()).isEqualTo(except)
     }
 }

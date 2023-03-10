@@ -1,12 +1,12 @@
 package view
 
-class FakeOutput(private val fakeConsole: StringBuilder) : Output {
+class FakeOutput(private val onOutput: (output: Any?) -> Unit) : Output {
     override fun print(message: Any?) {
-        fakeConsole.append(message)
+        onOutput(message)
     }
 
     override fun println(message: Any?) {
-        fakeConsole.append(message)
-        fakeConsole.append("\n")
+        onOutput(message)
+        onOutput("\n")
     }
 }
